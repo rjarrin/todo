@@ -3,20 +3,86 @@
     src: url('./fonts/Mukta.ttf');
 }
 
+:root {
+    --header-height: 70px;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
 /* Header content */
-header img {
+#header {
+    width: 100vw;
+    height: var(--header-height);
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+}
+
+#header img {
     float: left;
     border-radius: 30px;
     width: 50px;
     height: 50px;
 }
 
+/* Content container */
+.content-container {
+    display: flex;
+    height: calc(100vh - var(--header-height));
+    width: 100vw;
+}
+
+/* Sidebar content */
 .content-container #sidebar {
     float: left;
-    height: 100vh;
+    width: 25%;
+    background-color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content-container #sidebar .task-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .content-container #sidebar img,
 .content-container #sidebar p {
-    float: left;
+    /* float: left; */
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.content-container #sidebar img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Task container content */
+.content-container #task-container {
+    float: right;
+    width: 75%;
+    background-color: #d0d0d0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-container #task-container #add-task {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
 }

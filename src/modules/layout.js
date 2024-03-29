@@ -1,8 +1,11 @@
-import logoImage from '../images/logoimage.jpg';
+import logoImage from "../images/logoimage.jpg";
+import taskImage from "../images/list-box-outline.svg";
+import addTaskImage from "../images/plus-circle-outline.svg";
 
 export default function generateTemplate() {
     generateHeader();
     generateSidebar();
+    generateTaskContainer();
 }
 
 function generateHeader() {
@@ -22,13 +25,34 @@ function generateHeader() {
 function generateSidebar() {
     // Identify the sidebar div
     const sidebar = document.querySelector("#sidebar");
+    // Create a new div to hold the task items
+    const taskListItems = document.createElement("div");
+    taskListItems.classList.add("task-list-item");
     // Add the task list icon
     const taskIcon = document.createElement("img");
-    taskIcon.src = logoImage;
+    taskIcon.src = taskImage;
     // Add task list item
     const tasksText = document.createElement("p");
     tasksText.textContent = "Tasks";
     // Append items to the sidebar
-    sidebar.appendChild(taskIcon);
-    sidebar.appendChild(tasksText);
+    taskListItems.appendChild(taskIcon);
+    taskListItems.appendChild(tasksText);
+    sidebar.appendChild(taskListItems);
+}
+
+function generateTaskContainer() {
+    // Identify the task container
+    const taskContainer = document.querySelector("#task-container");
+    // Add temp text to container
+    const taskText = document.createElement("p");
+    taskText.textContent = "Task here";
+    taskContainer.appendChild(taskText);
+    // Add add button to the container
+    const addButton = document.createElement("img");
+    addButton.id = "add-task";
+    addButton.src = addTaskImage;
+    addButton.addEventListener("click", () => {
+        console.log("Add button pushed");
+    });
+    taskContainer.appendChild(addButton);
 }
