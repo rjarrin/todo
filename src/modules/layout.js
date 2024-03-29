@@ -2,6 +2,7 @@ import logoImage from '../images/logoimage.jpg';
 
 export default function generateTemplate() {
     generateHeader();
+    generateSidebar();
 }
 
 function generateHeader() {
@@ -16,4 +17,18 @@ function generateHeader() {
     headerTitle.style.float = "left";
     header.appendChild(headerImage);
     header.appendChild(headerTitle);
+}
+
+function generateSidebar() {
+    // Identify the sidebar div
+    const sidebar = document.querySelector("#sidebar");
+    // Add the task list icon
+    const taskIcon = document.createElement("img");
+    taskIcon.src = logoImage;
+    // Add task list item
+    const tasksText = document.createElement("p");
+    tasksText.textContent = "Tasks";
+    // Append items to the sidebar
+    sidebar.appendChild(taskIcon);
+    sidebar.appendChild(tasksText);
 }
