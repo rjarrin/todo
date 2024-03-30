@@ -1,5 +1,6 @@
 class Project {
     constructor(name) {
+        console.log("Project constructor received name: ", name);
         this.name = name;
         this.todos = [];
     }

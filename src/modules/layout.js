@@ -1,8 +1,21 @@
 import logoImage from "../images/logoimage.jpg";
 import taskImage from "../images/list-box-outline.svg";
 import addTaskImage from "../images/plus-circle-outline.svg";
+import ProjectManager from "../modules/projectmanager.js";
+import { saveProjects, loadProjects } from "../modules/persistence.js"
+import Project from "./project.js";
+
+export const projectManager = new ProjectManager();
 
 export default function generateTemplate() {
+    loadProjects();
+    // Checks if the "Default Project" already exists
+    const defaultProjectExists = projectManager.getAllProjects().some(project => project.name === "Default Project");
+    if(!defaultProjectExists) {
+        // Add a default project
+        console.log("CALLED ADDPROJECT FROM DEFAULTPROJECTEXISTS");
+        projectManager.addProject("Default Project");
+    }
     generateHeader();
     generateSidebar();
     generateTaskContainer();
@@ -41,6 +54,42 @@ function generateSidebar() {
 
     // Create the button for creating new projects
     const createProjectButton = document.createElement("button");
+    createProjectButton.id = "createProjectButton";
+    createProjectButton.textContent = "Create New Project";
+    sidebar.appendChild(createProjectButton);
+
+    // Create the dropdown for selecting projects
+    const projectSelect = document.createElement("select");
+    projectSelect.id = "projectSelect";
+    sidebar.appendChild(projectSelect);
+
+    // Add event listener to the create project button
+    createProjectButton.addEventListener("click", () => {
+        const projectName = prompt("Enter a name for a new project:");
+        console.log("Project name entered:", projectName);
+        if(projectName) {
+            console.log("Creating new project with name:", projectName);
+            const newProject = new Project(projectName);
+            console.log("CALLED ADDPROJECT FROM BUTTON LISTENER");
+            projectManager.addProject(newProject);
+            updateProjectDropdown();
+            saveProjects();
+        }
+    });
+    // Call updateProjectDropdown to populate the dropdown initially
+    updateProjectDropdown();
+}
+
+function updateProjectDropdown() {
+    const select = document.getElementById("projectSelect");
+    // Clear the dropdown
+    select.innerHTML = "";
+    projectManager.getAllProjects().forEach(project => {
+        const option = document.createElement("option");
+        option.value = project.name;
+        option.textContent = project.name;
+        select.appendChild(option);
+    });
 }
 
 function generateTaskContainer() {

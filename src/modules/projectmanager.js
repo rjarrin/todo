@@ -7,8 +7,24 @@ class ProjectManager {
 
     // Add a new project
     addProject(name) {
-        const newProject = new Project(name);
-        this.projects.push(newProject);
+        // const newProject = new Project(name);
+        // this.projects.push(newProject);
+        let project;
+        if (typeof name === "string") {
+            // Check if a project with the same name already exists
+            const existingProject = this.projects.find(p => p.name === name);
+            if (existingProject) {
+                console.log(`Project with name "${projectOrName}" already exists.`);
+                return;
+            }
+            project = new Project(name);
+        } else if (name instanceof Project) {
+            project = name;
+        } else {
+            console.error("Invalid argument passed to addProject. Expected a string or a Project object");
+            return;
+        }
+        this.projects.push(project);
     }
 
     // Get a project by name
