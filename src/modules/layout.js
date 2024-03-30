@@ -38,6 +38,9 @@ function generateSidebar() {
     taskListItems.appendChild(taskIcon);
     taskListItems.appendChild(tasksText);
     sidebar.appendChild(taskListItems);
+
+    // Create the button for creating new projects
+    const createProjectButton = document.createElement("button");
 }
 
 function generateTaskContainer() {
