@@ -43,10 +43,15 @@ function generateSidebar() {
 function generateTaskContainer() {
     // Identify the task container
     const taskContainer = document.querySelector("#task-container");
+    // Create a container for just the tasks
+    // Create a container for the footer of the tasks (add-button)
+    const buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("button-container");
     // Add temp text to container
-    const taskText = document.createElement("p");
-    taskText.textContent = "Task here";
-    taskContainer.appendChild(taskText);
+    // const taskText = document.createElement("p");
+    // taskText.textContent = "Task here";
+    // taskContainer.appendChild(taskText);
+
     // Add add button to the container
     const addButton = document.createElement("img");
     addButton.id = "add-task";
@@ -54,5 +59,7 @@ function generateTaskContainer() {
     addButton.addEventListener("click", () => {
         console.log("Add button pushed");
     });
-    taskContainer.appendChild(addButton);
+    // taskContainer.appendChild(addButton);
+    buttonContainer.appendChild(addButton);
+    taskContainer.appendChild(buttonContainer);
 }
