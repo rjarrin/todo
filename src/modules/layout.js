@@ -119,7 +119,16 @@ function updateProjectList() {
             }
         });
         listItem.appendChild(editButton);
-
+        // Create and append the delete button
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add("delete-button");
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", () => {
+            projectManager.removeProject(project.name);
+            updateProjectList();
+            saveProjects();
+        });
+        listItem.appendChild(deleteButton);
         projectList.appendChild(listItem);
     });
 }
