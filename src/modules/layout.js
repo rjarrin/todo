@@ -58,10 +58,15 @@ function generateSidebar() {
     createProjectButton.textContent = "Create New Project";
     sidebar.appendChild(createProjectButton);
 
-    // Create the dropdown for selecting projects
-    const projectSelect = document.createElement("select");
-    projectSelect.id = "projectSelect";
-    sidebar.appendChild(projectSelect);
+    // Create a container for the project list
+    const projectListContainer = document.createElement("div");
+    projectListContainer.id = "projectListContainer";
+    sidebar.appendChild(projectListContainer);
+
+    // Create the project list
+    const projectList = document.createElement("ul");
+    projectList.id = "projectList";
+    projectListContainer.append(projectList);
 
     // Add event listener to the create project button
     createProjectButton.addEventListener("click", () => {
@@ -72,12 +77,12 @@ function generateSidebar() {
             const newProject = new Project(projectName);
             console.log("CALLED ADDPROJECT FROM BUTTON LISTENER");
             projectManager.addProject(newProject);
-            updateProjectDropdown();
+            updateProjectList();
             saveProjects();
         }
     });
-    // Call updateProjectDropdown to populate the dropdown initially
-    updateProjectDropdown();
+    // Update the project list
+    updateProjectList();
 }
 
 function updateProjectDropdown() {
@@ -89,6 +94,18 @@ function updateProjectDropdown() {
         option.value = project.name;
         option.textContent = project.name;
         select.appendChild(option);
+    });
+}
+
+function updateProjectList() {
+    const projectList = document.getElementById("projectList");
+    // Clear the list
+    projectList.innerHTML = "";
+    // Iterate over the current projects and repopulate the list
+    projectManager.getAllProjects().forEach(project => {
+        const listItem = document.createElement("li");
+        listItem.textContent = project.name;
+        projectList.appendChild(listItem);
     });
 }
 
