@@ -103,8 +103,23 @@ function updateProjectList() {
     projectList.innerHTML = "";
     // Iterate over the current projects and repopulate the list
     projectManager.getAllProjects().forEach(project => {
+        // Create the project name in the list
         const listItem = document.createElement("li");
         listItem.textContent = project.name;
+        // Create and append the edit button
+        const editButton = document.createElement("button");
+        editButton.classList.add("edit-button");
+        editButton.textContent = "Edit";
+        editButton.addEventListener("click", () => {
+            const newName = prompt("Enter a new name for the project:");
+            if(newName) {
+                projectManager.updateProjectName(project.name, newName);
+                updateProjectList();
+                saveProjects();
+            }
+        });
+        listItem.appendChild(editButton);
+
         projectList.appendChild(listItem);
     });
 }
