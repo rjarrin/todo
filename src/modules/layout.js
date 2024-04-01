@@ -16,6 +16,9 @@ export default function generateTemplate() {
     //     console.log("CALLED ADDPROJECT FROM DEFAULTPROJECTEXISTS");
     //     projectManager.addProject("Default Project");
     // }
+    
+    // Select the first project by default
+    const projects = projectManager.getAllProjects();
     if (projects.length === 0) {
         projectManager.addProject("Default Project");
     }
@@ -23,8 +26,7 @@ export default function generateTemplate() {
     generateSidebar();
     generateTaskContainer();
 
-    // Select the first project by default
-    const projects = projectManager.getAllProjects();
+    
     if (projects.length > 0) {
         const firstProject = projects[0].name;
         projectManager.setSelectedProject(firstProject);
