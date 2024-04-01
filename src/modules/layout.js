@@ -10,15 +10,26 @@ export const projectManager = new ProjectManager();
 export default function generateTemplate() {
     loadProjects();
     // Checks if the "Default Project" already exists
-    const defaultProjectExists = projectManager.getAllProjects().some(project => project.name === "Default Project");
-    if(!defaultProjectExists) {
-        // Add a default project
-        console.log("CALLED ADDPROJECT FROM DEFAULTPROJECTEXISTS");
+    // const defaultProjectExists = projectManager.getAllProjects().some(project => project.name === "Default Project");
+    // if(!defaultProjectExists) {
+    //     // Add a default project
+    //     console.log("CALLED ADDPROJECT FROM DEFAULTPROJECTEXISTS");
+    //     projectManager.addProject("Default Project");
+    // }
+    if (projects.length === 0) {
         projectManager.addProject("Default Project");
     }
     generateHeader();
     generateSidebar();
     generateTaskContainer();
+
+    // Select the first project by default
+    const projects = projectManager.getAllProjects();
+    if (projects.length > 0) {
+        const firstProject = projects[0].name;
+        projectManager.setSelectedProject(firstProject);
+        highlightProject(firstProject);
+    }
 }
 
 function generateHeader() {
