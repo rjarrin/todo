@@ -16,7 +16,7 @@ export default function generateTemplate() {
     //     console.log("CALLED ADDPROJECT FROM DEFAULTPROJECTEXISTS");
     //     projectManager.addProject("Default Project");
     // }
-    
+
     // Select the first project by default
     const projects = projectManager.getAllProjects();
     if (projects.length === 0) {
@@ -92,6 +92,11 @@ function generateSidebar() {
             projectManager.addProject(newProject);
             updateProjectList();
             saveProjects();
+
+            // Update the currently selected project highlight to the newly added project
+            projectManager.setSelectedProject(projectName);
+            // Highlight the project
+            highlightProject(projectName);
         }
     });
     // Update the project list
