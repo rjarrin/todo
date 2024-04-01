@@ -3,6 +3,7 @@ import Project from "../modules/project.js";
 class ProjectManager {
     constructor() {
         this.projects = [];
+        this.selectedProject = null;
     }
 
     // Add a new project
@@ -51,6 +52,16 @@ class ProjectManager {
     // Returns all projects
     getAllProjects() {
         return this.projects;
+    }
+
+    // Set the currently selected project
+    setSelectedProject(projectName) {
+        this.selectedProject = projectName;
+    }
+
+    // Get the currently selected project
+    getSelectedProject() {
+        return this.selectedProject;
     }
 }
 

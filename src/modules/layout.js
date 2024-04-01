@@ -105,7 +105,15 @@ function updateProjectList() {
     projectManager.getAllProjects().forEach(project => {
         // Create the project name in the list
         const listItem = document.createElement("li");
-        listItem.textContent = project.name;
+        const itemName = document.createElement("span");
+        itemName.textContent = project.name;
+        listItem.appendChild(itemName);
+        // Listener to user's currently selected project
+        listItem.addEventListener("click", () => {
+            // Update the currently selected project
+            updateSelectedProject(project.name);
+            console.log("CLICKED THE ITEM");
+        });
         // Create and append the edit button
         const editButton = document.createElement("button");
         editButton.classList.add("edit-button");
@@ -130,6 +138,29 @@ function updateProjectList() {
         });
         listItem.appendChild(deleteButton);
         projectList.appendChild(listItem);
+    });
+}
+
+function updateSelectedProject(projectName) {
+    // Update the currently selected project
+    projectManager.setSelectedProject(projectName);
+    // Highlight the selected project
+    highlightProject(projectName);
+}
+
+function highlightProject(projectName) {
+    const projectListItems = document.querySelectorAll("#projectList li");
+    console.log("WITHIN HIHGLIGHT:", projectName);
+
+    projectListItems.forEach(item => {
+        const itemName = item.querySelector("span");
+        console.log("CURRENT ITEM:", item.textContent);
+        if (itemName && itemName.textContent === projectName) {
+            item.style.color = "blue";
+            console.log("FOUND A MATCH");
+        } else {
+            item.style.color = "black";
+        }
     });
 }
 
