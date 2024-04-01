@@ -58,10 +58,15 @@ function generateSidebar() {
     createProjectButton.textContent = "Create New Project";
     sidebar.appendChild(createProjectButton);
 
-    // Create the dropdown for selecting projects
-    const projectSelect = document.createElement("select");
-    projectSelect.id = "projectSelect";
-    sidebar.appendChild(projectSelect);
+    // Create a container for the project list
+    const projectListContainer = document.createElement("div");
+    projectListContainer.id = "projectListContainer";
+    sidebar.appendChild(projectListContainer);
+
+    // Create the project list
+    const projectList = document.createElement("ul");
+    projectList.id = "projectList";
+    projectListContainer.append(projectList);
 
     // Add event listener to the create project button
     createProjectButton.addEventListener("click", () => {
@@ -72,12 +77,12 @@ function generateSidebar() {
             const newProject = new Project(projectName);
             console.log("CALLED ADDPROJECT FROM BUTTON LISTENER");
             projectManager.addProject(newProject);
-            updateProjectDropdown();
+            updateProjectList();
             saveProjects();
         }
     });
-    // Call updateProjectDropdown to populate the dropdown initially
-    updateProjectDropdown();
+    // Update the project list
+    updateProjectList();
 }
 
 function updateProjectDropdown() {
@@ -89,6 +94,73 @@ function updateProjectDropdown() {
         option.value = project.name;
         option.textContent = project.name;
         select.appendChild(option);
+    });
+}
+
+function updateProjectList() {
+    const projectList = document.getElementById("projectList");
+    // Clear the list
+    projectList.innerHTML = "";
+    // Iterate over the current projects and repopulate the list
+    projectManager.getAllProjects().forEach(project => {
+        // Create the project name in the list
+        const listItem = document.createElement("li");
+        const itemName = document.createElement("span");
+        itemName.textContent = project.name;
+        listItem.appendChild(itemName);
+        // Listener to user's currently selected project
+        listItem.addEventListener("click", () => {
+            // Update the currently selected project
+            updateSelectedProject(project.name);
+            console.log("CLICKED THE ITEM");
+        });
+        // Create and append the edit button
+        const editButton = document.createElement("button");
+        editButton.classList.add("edit-button");
+        editButton.textContent = "Edit";
+        editButton.addEventListener("click", () => {
+            const newName = prompt("Enter a new name for the project:");
+            if(newName) {
+                projectManager.updateProjectName(project.name, newName);
+                updateProjectList();
+                saveProjects();
+            }
+        });
+        listItem.appendChild(editButton);
+        // Create and append the delete button
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add("delete-button");
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", () => {
+            projectManager.removeProject(project.name);
+            updateProjectList();
+            saveProjects();
+        });
+        listItem.appendChild(deleteButton);
+        projectList.appendChild(listItem);
+    });
+}
+
+function updateSelectedProject(projectName) {
+    // Update the currently selected project
+    projectManager.setSelectedProject(projectName);
+    // Highlight the selected project
+    highlightProject(projectName);
+}
+
+function highlightProject(projectName) {
+    const projectListItems = document.querySelectorAll("#projectList li");
+    console.log("WITHIN HIHGLIGHT:", projectName);
+
+    projectListItems.forEach(item => {
+        const itemName = item.querySelector("span");
+        console.log("CURRENT ITEM:", item.textContent);
+        if (itemName && itemName.textContent === projectName) {
+            item.style.color = "blue";
+            console.log("FOUND A MATCH");
+        } else {
+            item.style.color = "black";
+        }
     });
 }
 
