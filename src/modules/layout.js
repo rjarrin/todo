@@ -4,19 +4,13 @@ import addTaskImage from "../images/plus-circle-outline.svg";
 import ProjectManager from "../modules/projectmanager.js";
 import { saveProjects, loadProjects } from "../modules/persistence.js"
 import Project from "./project.js";
+import { createModal, showModal } from "./todomodal.js";
 
 export const projectManager = new ProjectManager();
 
 export default function generateTemplate() {
     loadProjects();
-    // Checks if the "Default Project" already exists
-    // const defaultProjectExists = projectManager.getAllProjects().some(project => project.name === "Default Project");
-    // if(!defaultProjectExists) {
-    //     // Add a default project
-    //     console.log("CALLED ADDPROJECT FROM DEFAULTPROJECTEXISTS");
-    //     projectManager.addProject("Default Project");
-    // }
-
+    createModal();
     // Select the first project by default
     const projects = projectManager.getAllProjects();
     if (projects.length === 0) {
@@ -25,13 +19,12 @@ export default function generateTemplate() {
     generateHeader();
     generateSidebar();
     generateTaskContainer();
-
-    
     if (projects.length > 0) {
         const firstProject = projects[0].name;
         projectManager.setSelectedProject(firstProject);
         highlightProject(firstProject);
     }
+
 }
 
 function generateHeader() {
@@ -193,13 +186,13 @@ function generateTaskContainer() {
     // const taskText = document.createElement("p");
     // taskText.textContent = "Task here";
     // taskContainer.appendChild(taskText);
-
     // Add add button to the container
     const addButton = document.createElement("img");
     addButton.id = "add-task";
     addButton.src = addTaskImage;
     addButton.addEventListener("click", () => {
         console.log("Add button pushed");
+        showModal();
     });
     // taskContainer.appendChild(addButton);
     buttonContainer.appendChild(addButton);
