@@ -116,10 +116,11 @@ body {
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: 5% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
+    max-width: 500px;
 }
 
 .modal-close {
@@ -128,3 +129,49 @@ body {
     font-size: 28px;
     font-weight: bold;
 }
+
+.modal-form-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.modal-form-container label {
+    margin-bottom: 5px;
+}
+
+.modal-form-container input,
+.modal-form-container textarea,
+.modal-form-container select {
+    width: 100%;
+}
+
+.modal-form-container textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.modal-checklist-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.modal-checklist-container label {
+    margin-bottom: 5px;
+}
+
+.modal-checklist-container input {
+    width: 100%;
+}
+
+.modal-checklist-container button {
+    margin-top: 5px;
+}
+
+
+
+
+
+
+

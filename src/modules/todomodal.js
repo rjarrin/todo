@@ -52,59 +52,109 @@ function showModal() {
 }
 
 function generateElements(form) {
-    // Title
-    const titleLabel = document.createElement("label");
-    titleLabel.textContent = "Title:";
-    const titleInput = document.createElement("input");
-    titleInput.type = "text";
-    titleInput.required = true;
-    form.appendChild(titleLabel);
-    form.appendChild(titleInput);
-    // Description
-    const descriptionLabel = document.createElement("label");
-    descriptionLabel.textContent = "Description:";
-    const descriptionInput = document.createElement("textarea");
-    form.appendChild(descriptionLabel);
-    form.appendChild(descriptionInput);
-    // Due date input
-    const dueDateLabel = document.createElement('label');
-    dueDateLabel.textContent = 'Due Date:';
-    const dueDateInput = document.createElement('input');
-    dueDateInput.type = 'date';
-    form.appendChild(dueDateLabel);
-    form.appendChild(dueDateInput);
-    // Priority select
-    const priorityLabel = document.createElement("label");
-    priorityLabel.textContent = "Priority:";
-    const prioritySelect = document.createElement("select");
-    const priorities = ["None", "Low", "Medium", "High"];
-    priorities.forEach(priority => {
-        const option = document.createElement("option");
-        option.value = priority;
-        option.textContent = priority;
-        prioritySelect.appendChild(option);
-    });
-    form.appendChild(priorityLabel);
-    form.appendChild(prioritySelect);
-    // Notes
-    const notesLabel = document.createElement("label");
-    notesLabel.textContent = "Notes:";
-    const notesInput = document.createElement("textarea");
-    form.appendChild(notesLabel);
-    form.appendChild(notesInput);
-    // Checklist 
+    // // Title
+    // const titleLabel = document.createElement("label");
+    // titleLabel.textContent = "Title:";
+    // const titleInput = document.createElement("input");
+    // titleInput.type = "text";
+    // titleInput.required = true;
+    // form.appendChild(titleLabel);
+    // form.appendChild(titleInput);
+    // // Description
+    // const descriptionLabel = document.createElement("label");
+    // descriptionLabel.textContent = "Description:";
+    // const descriptionInput = document.createElement("textarea");
+    // form.appendChild(descriptionLabel);
+    // form.appendChild(descriptionInput);
+    // // Due date input
+    // const dueDateLabel = document.createElement('label');
+    // dueDateLabel.textContent = 'Due Date:';
+    // const dueDateInput = document.createElement('input');
+    // dueDateInput.type = 'date';
+    // form.appendChild(dueDateLabel);
+    // form.appendChild(dueDateInput);
+    // // Priority select
+    // const priorityLabel = document.createElement("label");
+    // priorityLabel.textContent = "Priority:";
+    // const prioritySelect = document.createElement("select");
+    // const priorities = ["None", "Low", "Medium", "High"];
+    // priorities.forEach(priority => {
+    //     const option = document.createElement("option");
+    //     option.value = priority;
+    //     option.textContent = priority;
+    //     prioritySelect.appendChild(option);
+    // });
+    // form.appendChild(priorityLabel);
+    // form.appendChild(prioritySelect);
+    // // Notes
+    // const notesLabel = document.createElement("label");
+    // notesLabel.textContent = "Notes:";
+    // const notesInput = document.createElement("textarea");
+    // form.appendChild(notesLabel);
+    // form.appendChild(notesInput);
+    // // Checklist 
+    // const checklistLabel = document.createElement('label');
+    // checklistLabel.textContent = 'Checklist:';
+    // const checklistInput = document.createElement('input');
+    // const addItemButton = document.createElement('button');
+    // addItemButton.textContent = 'Add item';
+    // addItemButton.onclick = function() {
+    //     // Logic to add item to checklist
+    //     console.log("ADDED ITEM");
+    // };
+    // form.appendChild(checklistLabel);
+    // form.appendChild(checklistInput);
+    // form.appendChild(addItemButton);
+
+    function createLabelInputPair(labelText, inputType, containerClass) {
+        const container = document.createElement("div");
+        container.classList.add(containerClass);
+        const label = document.createElement("label");
+        label.textContent = labelText + ":";
+        container.appendChild(label);
+        let input;
+        if (labelText === "Priority") {
+            input = document.createElement(inputType);
+            const priorities = ["None", "Low", "Medium", "High"];
+            priorities.forEach(priority => {
+                const option = document.createElement("option");
+                option.value = priority;
+                option.textContent = priority;
+                input.appendChild(option);
+            });
+        } else {
+            input = document.createElement(inputType);
+        }
+        container.appendChild(input);
+        return container;
+    }
+
+    // Create and append the elements
+    form.appendChild(createLabelInputPair('Title', 'input', 'modal-form-container'));
+    form.appendChild(createLabelInputPair('Description', 'textarea', 'modal-form-container'));
+    form.appendChild(createLabelInputPair('Due Date', 'input', 'modal-form-container'));
+    form.appendChild(createLabelInputPair('Priority', 'select', 'modal-form-container'));
+    form.appendChild(createLabelInputPair('Notes', 'textarea', 'modal-form-container'));
+
+    // Checklist
+    const checklistContainer = document.createElement('div');
+    checklistContainer.classList.add('modal-checklist-container');
+
     const checklistLabel = document.createElement('label');
     checklistLabel.textContent = 'Checklist:';
+    checklistContainer.appendChild(checklistLabel);
+
     const checklistInput = document.createElement('input');
+    checklistContainer.appendChild(checklistInput);
+
     const addItemButton = document.createElement('button');
     addItemButton.textContent = 'Add item';
     addItemButton.onclick = function() {
         // Logic to add item to checklist
-        console.log("ADDED ITEM");
     };
-    form.appendChild(checklistLabel);
-    form.appendChild(checklistInput);
-    form.appendChild(addItemButton);
+    checklistContainer.appendChild(addItemButton);
+
+    form.appendChild(checklistContainer);
 }
 
 export {createModal, showModal};
