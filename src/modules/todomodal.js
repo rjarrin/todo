@@ -22,8 +22,10 @@ function createModal() {
         e.preventDefault();
         const title = document.getElementById("todo-title-input").value;
         const description = document.getElementById("todo-description-input").value;
+        const dueDate = document.getElementById("todo-date-input").value;
+        const priority = document.getElementById("todo-priority-input").value;
         if (title) {
-            addTodoToProject(title, description);
+            addTodoToProject(title, description, dueDate, priority);
             modal.style.display = "none";
             form.reset();
         }
@@ -66,8 +68,44 @@ function createModal() {
     form.appendChild(descriptionContainer);
 
     // Due Date
+    const dateContainer = document.createElement("div");
+    dateContainer.classList.add("modal-form-container");
+
+    const dateLabel = document.createElement("label");
+    dateLabel.textContent = "Due Date:";
+    dateLabel.htmlFor = "todo-date-input";
+
+    const dateInput = document.createElement("input");
+    dateInput.type = "date";
+    dateInput.id = "todo-date-input";
+    dateInput.name = "todo-date";
+
+    dateContainer.appendChild(dateLabel);
+    dateContainer.appendChild(dateInput);
+    form.appendChild(dateContainer);
 
     // Priority
+    const priorityContainer = document.createElement("div");
+    priorityContainer.classList.add("modal-form-container");
+
+    const priorityLabel = document.createElement("label");
+    priorityLabel.textContent = "Priority:";
+    priorityLabel.htmlFor = "todo-priority-input";
+
+    const priorityInput = document.createElement("select");
+    priorityInput.id = "todo-priority-input";
+    priorityInput.name = "todo-priority";
+    const priorities = ["", "Low", "Medium", "High"];
+    priorities.forEach(priority => {
+        const option = document.createElement("option");
+        option.value = priority;
+        option.textContent = priority;
+        priorityInput.appendChild(option);
+    });
+
+    priorityContainer.appendChild(priorityLabel);
+    priorityContainer.appendChild(priorityInput);
+    form.appendChild(priorityContainer);
 
     // Close button
     const closeButton = document.createElement("button");
@@ -97,7 +135,7 @@ function showModal() {
     modal.style.display = "block";
 }
 
-function addTodoToProject(title, description) {
+function addTodoToProject(title, description, dueDate, priority) {
     const selectedProjectName = projectManager.getSelectedProject();
     const selectedProject = projectManager.getProjectByName(selectedProjectName);
 
@@ -105,7 +143,7 @@ function addTodoToProject(title, description) {
         console.error("No project is currently selected.");
         return;
     }
-    const newTodo = new Todo(title, description, new Date(), new Date(), "medium", "", []);
+    const newTodo = new Todo(title, description, dueDate, new Date(), priority, "", []);
 
     selectedProject.addTodo(newTodo);
     saveProjects();
