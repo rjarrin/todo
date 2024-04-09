@@ -126,7 +126,7 @@ body {
 .modal-close {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    /* font-size: 28px; */
     font-weight: bold;
 }
 
@@ -148,10 +148,10 @@ body {
 
 .modal-form-container textarea {
     resize: vertical;
-    min-height: 60px;
+    height: 6em;
 }
 
-.modal-checklist-container {
+/* .modal-checklist-container {
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
@@ -167,7 +167,7 @@ body {
 
 .modal-checklist-container button {
     margin-top: 5px;
-}
+} */
 
 
 

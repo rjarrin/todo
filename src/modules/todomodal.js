@@ -1,4 +1,7 @@
+import { projectManager } from "./layout.js";
+import { saveProjects } from "./persistence.js";
 import Todo from "./todo.js";
+
 
 function createModal() {
     // Define modal div
@@ -7,41 +10,84 @@ function createModal() {
     // Modal content
     const modalContent = document.createElement("div");
     modalContent.classList.add("modal-content");
-    // Close button
-    const closeModal = document.createElement("span");
-    closeModal.classList.add("modal-close");
-    closeModal.innerHTML = '&times;';
-    closeModal.onclick = function() {
-        modal.style.display = "none";
-    }
     // Title
     const modalTitle = document.createElement("h2");
-    modalTitle.textContent = "Add Task";
-    // Form
+    modalTitle.textContent = "Add Todo";
+
+    // Create the form
     const form = document.createElement("form");
-    form.onsubmit = function(e) {
+    form.id = "todo-form";
+
+    form.addEventListener("submit", (e) => {
         e.preventDefault();
-        // NEED TO ADD LOGIC FOR HANDLING FORM SUBMISSION LATER
+        const title = document.getElementById("todo-title-input").value;
+        const description = document.getElementById("todo-description-input").value;
+        if (title) {
+            addTodoToProject(title, description);
+            modal.style.display = "none";
+            form.reset();
+        }
+    });
+
+    // Title input
+    const titleContainer = document.createElement("div");
+    titleContainer.classList.add("modal-form-container");
+
+    const titleLabel = document.createElement("label");
+    titleLabel.textContent = "Title:";
+    titleLabel.htmlFor = "todo-title-input";
+
+    const titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.required = true;
+    titleInput.id = "todo-title-input";
+    titleInput.name = "todo-title";
+    titleInput.placeholder = "Enter title";
+
+    titleContainer.appendChild(titleLabel);
+    titleContainer.appendChild(titleInput);
+    form.appendChild(titleContainer);
+
+    // Description
+    const descriptionContainer = document.createElement("div");
+    descriptionContainer.classList.add("modal-form-container");
+
+    const descriptionLabel = document.createElement("label");
+    descriptionLabel.textContent = "Description:";
+    descriptionLabel.htmlFor = "todo-description-input";
+
+    const descriptionInput = document.createElement("textarea");
+    descriptionInput.id = "todo-description-input";
+    descriptionInput.name = "todo-description";
+    descriptionInput.placeholder = "Enter the todo description";
+
+    descriptionContainer.appendChild(descriptionLabel);
+    descriptionContainer.appendChild(descriptionInput);
+    form.appendChild(descriptionContainer);
+
+    // Due Date
+
+    // Priority
+
+    // Close button
+    const closeButton = document.createElement("button");
+    closeButton.classList.add("modal-close");
+    closeButton.textContent = "Close";
+    closeButton.addEventListener("click", () => {
         modal.style.display = "none";
-    }
+        form.reset();
+    });
+    // Add Button
+    const addButton = document.createElement("button");
+    addButton.textContent = "Add";
+    addButton.type = "submit";
 
-    generateElements(form);
-
-    const addTodoBtn = document.createElement("button");
-    addTodoBtn.textContent = "Add";
-    addTodoBtn.type = "submit";
-
-    const cancelTodoBtn = document.createElement("button");
-    cancelTodoBtn.textContent = "Cancel";
-    cancelTodoBtn.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    modalContent.appendChild(closeModal);
+    // Append elements
     modalContent.appendChild(modalTitle);
+
+    form.appendChild(closeButton);
+    form.appendChild(addButton);
     modalContent.appendChild(form);
-    modalContent.appendChild(addTodoBtn);
-    modalContent.appendChild(cancelTodoBtn);
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
 }
@@ -51,110 +97,18 @@ function showModal() {
     modal.style.display = "block";
 }
 
-function generateElements(form) {
-    // // Title
-    // const titleLabel = document.createElement("label");
-    // titleLabel.textContent = "Title:";
-    // const titleInput = document.createElement("input");
-    // titleInput.type = "text";
-    // titleInput.required = true;
-    // form.appendChild(titleLabel);
-    // form.appendChild(titleInput);
-    // // Description
-    // const descriptionLabel = document.createElement("label");
-    // descriptionLabel.textContent = "Description:";
-    // const descriptionInput = document.createElement("textarea");
-    // form.appendChild(descriptionLabel);
-    // form.appendChild(descriptionInput);
-    // // Due date input
-    // const dueDateLabel = document.createElement('label');
-    // dueDateLabel.textContent = 'Due Date:';
-    // const dueDateInput = document.createElement('input');
-    // dueDateInput.type = 'date';
-    // form.appendChild(dueDateLabel);
-    // form.appendChild(dueDateInput);
-    // // Priority select
-    // const priorityLabel = document.createElement("label");
-    // priorityLabel.textContent = "Priority:";
-    // const prioritySelect = document.createElement("select");
-    // const priorities = ["None", "Low", "Medium", "High"];
-    // priorities.forEach(priority => {
-    //     const option = document.createElement("option");
-    //     option.value = priority;
-    //     option.textContent = priority;
-    //     prioritySelect.appendChild(option);
-    // });
-    // form.appendChild(priorityLabel);
-    // form.appendChild(prioritySelect);
-    // // Notes
-    // const notesLabel = document.createElement("label");
-    // notesLabel.textContent = "Notes:";
-    // const notesInput = document.createElement("textarea");
-    // form.appendChild(notesLabel);
-    // form.appendChild(notesInput);
-    // // Checklist 
-    // const checklistLabel = document.createElement('label');
-    // checklistLabel.textContent = 'Checklist:';
-    // const checklistInput = document.createElement('input');
-    // const addItemButton = document.createElement('button');
-    // addItemButton.textContent = 'Add item';
-    // addItemButton.onclick = function() {
-    //     // Logic to add item to checklist
-    //     console.log("ADDED ITEM");
-    // };
-    // form.appendChild(checklistLabel);
-    // form.appendChild(checklistInput);
-    // form.appendChild(addItemButton);
+function addTodoToProject(title, description) {
+    const selectedProjectName = projectManager.getSelectedProject();
+    const selectedProject = projectManager.getProjectByName(selectedProjectName);
 
-    function createLabelInputPair(labelText, inputType, containerClass) {
-        const container = document.createElement("div");
-        container.classList.add(containerClass);
-        const label = document.createElement("label");
-        label.textContent = labelText + ":";
-        container.appendChild(label);
-        let input;
-        if (labelText === "Priority") {
-            input = document.createElement(inputType);
-            const priorities = ["None", "Low", "Medium", "High"];
-            priorities.forEach(priority => {
-                const option = document.createElement("option");
-                option.value = priority;
-                option.textContent = priority;
-                input.appendChild(option);
-            });
-        } else {
-            input = document.createElement(inputType);
-        }
-        container.appendChild(input);
-        return container;
+    if(!selectedProject) {
+        console.error("No project is currently selected.");
+        return;
     }
+    const newTodo = new Todo(title, description, new Date(), new Date(), "medium", "", []);
 
-    // Create and append the elements
-    form.appendChild(createLabelInputPair('Title', 'input', 'modal-form-container'));
-    form.appendChild(createLabelInputPair('Description', 'textarea', 'modal-form-container'));
-    form.appendChild(createLabelInputPair('Due Date', 'input', 'modal-form-container'));
-    form.appendChild(createLabelInputPair('Priority', 'select', 'modal-form-container'));
-    form.appendChild(createLabelInputPair('Notes', 'textarea', 'modal-form-container'));
-
-    // Checklist
-    const checklistContainer = document.createElement('div');
-    checklistContainer.classList.add('modal-checklist-container');
-
-    const checklistLabel = document.createElement('label');
-    checklistLabel.textContent = 'Checklist:';
-    checklistContainer.appendChild(checklistLabel);
-
-    const checklistInput = document.createElement('input');
-    checklistContainer.appendChild(checklistInput);
-
-    const addItemButton = document.createElement('button');
-    addItemButton.textContent = 'Add item';
-    addItemButton.onclick = function() {
-        // Logic to add item to checklist
-    };
-    checklistContainer.appendChild(addItemButton);
-
-    form.appendChild(checklistContainer);
+    selectedProject.addTodo(newTodo);
+    saveProjects();
 }
 
 export {createModal, showModal};
