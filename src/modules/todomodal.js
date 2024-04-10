@@ -1,4 +1,4 @@
-import { projectManager } from "./layout.js";
+import { displayTodos, projectManager } from "./layout.js";
 import { saveProjects } from "./persistence.js";
 import Todo from "./todo.js";
 
@@ -143,10 +143,17 @@ function addTodoToProject(title, description, dueDate, priority) {
         console.error("No project is currently selected.");
         return;
     }
-    const newTodo = new Todo(title, description, dueDate, new Date(), priority, "", []);
+
+    // Check if dueDate is provided, if not, set it to null or a default value
+    const parsedDueDate = dueDate ? new Date(dueDate) : null;
+
+    const newTodo = new Todo(title, description, parsedDueDate, new Date(), priority, "", []);
 
     selectedProject.addTodo(newTodo);
     saveProjects();
+    // Display the todo of the selected project
+    projectManager.setSelectedProject(selectedProjectName);
+    displayTodos();
 }
 
 export {createModal, showModal};

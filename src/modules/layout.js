@@ -5,6 +5,7 @@ import ProjectManager from "../modules/projectmanager.js";
 import { saveProjects, loadProjects } from "../modules/persistence.js"
 import Project from "./project.js";
 import { createModal, showModal } from "./todomodal.js";
+import { format } from "date-fns";
 
 export const projectManager = new ProjectManager();
 
@@ -19,6 +20,7 @@ export default function generateTemplate() {
     generateHeader();
     generateSidebar();
     generateTaskContainer();
+    //generateButtonContainer();
     if (projects.length > 0) {
         const firstProject = projects[0].name;
         projectManager.setSelectedProject(firstProject);
@@ -157,6 +159,8 @@ function updateSelectedProject(projectName) {
     projectManager.setSelectedProject(projectName);
     // Highlight the selected project
     highlightProject(projectName);
+    // Display the todos of the selected project
+    displayTodos();
 }
 
 function highlightProject(projectName) {
@@ -175,7 +179,7 @@ function highlightProject(projectName) {
     });
 }
 
-function generateTaskContainer() {
+function generateTaskContainer1() {
     // Identify the task container
     const taskContainer = document.querySelector("#task-container");
     // Create a container for just the tasks
@@ -198,3 +202,123 @@ function generateTaskContainer() {
     buttonContainer.appendChild(addButton);
     taskContainer.appendChild(buttonContainer);
 }
+
+function generateTaskContainer() {
+    // Identify the task container
+    const taskContainer = document.querySelector("#task-container");
+    // Clear the task container
+    taskContainer.innerHTML = "";
+
+    // Create a container for just the tasks
+    const tasksContainer = document.createElement("div");
+    tasksContainer.classList.add("tasks-container");
+
+    // Create a container for the footer of the tasks (add-button)
+    const buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("button-container");
+
+    // Add add button to the container
+    const addButton = document.createElement("img");
+    addButton.id = "add-task";
+    addButton.src = addTaskImage;
+    addButton.addEventListener("click", () => {
+        console.log("Add button pushed");
+        showModal();
+    });
+    buttonContainer.appendChild(addButton);
+
+    // Append tasksContainer and buttonContainer to the taskContainer
+    taskContainer.appendChild(tasksContainer);
+    taskContainer.appendChild(buttonContainer);
+}
+
+
+
+export function displayTodos() {
+    const taskContainer = document.querySelector(".tasks-container");
+    // Clear the task container
+    taskContainer.innerHTML = "";
+
+    const selectedProjectName = projectManager.getSelectedProject();
+    const selectedProject = projectManager.getProjectByName(selectedProjectName);
+
+    if (!selectedProject) {
+        console.log("No project is currently selected");
+        return;
+    }
+
+    selectedProject.todos.forEach(todo => {
+        const todoCard = createTodoCard(todo);
+        taskContainer.appendChild(todoCard);
+    });
+}
+
+function createTodoCard(todo) {
+    const card = document.createElement("div");
+    card.classList.add("todo-card");
+
+    // Priority line
+    const priorityLine = document.createElement("div");
+    priorityLine.classList.add("priority-line");
+    priorityLine.style.backgroundColor = getPriorityColor(todo.priority);
+    card.appendChild(priorityLine);
+
+    // Title and description container
+    const titleDescriptionContainer = document.createElement("div");
+    titleDescriptionContainer.classList.add("title-description-container");
+
+    const title = document.createElement("h3");
+    title.textContent = todo.title;
+    titleDescriptionContainer.appendChild(title);
+
+    const description = document.createElement("p");
+    description.textContent = todo.description;
+    titleDescriptionContainer.appendChild(description);
+    card.appendChild(titleDescriptionContainer);
+
+    // Due date and creation date container
+    const dateContainer = document.createElement("div");
+    dateContainer.classList.add("date-container");
+
+    const creationDate = document.createElement("p");
+    creationDate.textContent = format(todo.creationDate, "yyyy-MM-dd");
+    dateContainer.appendChild(creationDate);
+
+    if (todo.dueDate instanceof Date && !isNaN(todo.dueDate)) {
+        const dueDate = document.createElement("p");
+        dueDate.textContent = "No due date";
+        dateContainer.appendChild(dueDate);
+    }
+    card.appendChild(dateContainer);
+
+    // Edit and Delete buttons
+    const buttonsContainer = document.createElement("div");
+    buttonsContainer.classList.add("buttons-container");
+
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+    editButton.addEventListener("click", () => console.log("Edit button pressed"));
+    buttonsContainer.appendChild(editButton);
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => console.log("Delete button pressed"));
+    buttonsContainer.appendChild(deleteButton);
+    card.appendChild(buttonsContainer);
+
+    return card;
+}
+
+function getPriorityColor(priority) {
+    switch (priority) {
+        case "Low":
+            return "green";
+        case "Medium":
+            return "lightorange";
+        case "High":
+            return "red";
+        default:
+            return "grey";
+    }
+}
+
