@@ -25,8 +25,9 @@ export default function generateTemplate() {
         const firstProject = projects[0].name;
         projectManager.setSelectedProject(firstProject);
         highlightProject(firstProject);
+        displayTodos();
     }
-
+    
 }
 
 function generateHeader() {
@@ -258,10 +259,11 @@ function createTodoCard(todo) {
     card.classList.add("todo-card");
 
     // Priority line
-    const priorityLine = document.createElement("div");
-    priorityLine.classList.add("priority-line");
-    priorityLine.style.backgroundColor = getPriorityColor(todo.priority);
-    card.appendChild(priorityLine);
+    // const priorityLine = document.createElement("div");
+    // priorityLine.classList.add("priority-line");
+    card.style.borderLeftColor = getPriorityColor(todo.priority);
+    card.style.borderLeftWidth = "8px";
+    // card.appendChild(priorityLine);
 
     // Title and description container
     const titleDescriptionContainer = document.createElement("div");
@@ -281,10 +283,14 @@ function createTodoCard(todo) {
     dateContainer.classList.add("date-container");
 
     const creationDate = document.createElement("p");
-    creationDate.textContent = format(todo.creationDate, "yyyy-MM-dd");
+    creationDate.textContent = "Created on: "+ format(todo.creationDate, "yyyy-MM-dd");
     dateContainer.appendChild(creationDate);
 
-    if (todo.dueDate instanceof Date && !isNaN(todo.dueDate)) {
+    if (todo.dueDate) {
+        const dueDate = document.createElement("p");
+        dueDate.textContent = "Due on: " + format(todo.dueDate, "yyyy-MM-dd");
+        dateContainer.appendChild(dueDate);
+    } else {
         const dueDate = document.createElement("p");
         dueDate.textContent = "No due date";
         dateContainer.appendChild(dueDate);
@@ -314,7 +320,7 @@ function getPriorityColor(priority) {
         case "Low":
             return "green";
         case "Medium":
-            return "lightorange";
+            return "orange";
         case "High":
             return "red";
         default:

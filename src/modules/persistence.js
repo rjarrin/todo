@@ -10,7 +10,7 @@ export function saveProjects() {
         todos: project.todos.map(todo => ({
             title: todo.title,
             description: todo.description,
-            dueDate: todo.dueDate,
+            dueDate: todo.dueDate ? todo.dueDate.toISOString() : "",
             creationDate: todo.creationDate,
             priority: todo.priority,
             notes: todo.notes,
@@ -29,10 +29,12 @@ export function loadProjects() {
     projectsData.forEach(projectData => {
         const project = new Project(projectData.name);
         projectData.todos.forEach(todoData => {
+            const dueDate = todoData.dueDate ? new Date(todoData.dueDate) : null;
             const todo = new Todo(
                 todoData.title,
                 todoData.description,
-                new Date(todoData.dueDate),
+                //new Date(todoData.dueDate),
+                dueDate,
                 new Date(todoData.creationDate),
                 todoData.priority,
                 todoData.notes,

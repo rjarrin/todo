@@ -20,6 +20,7 @@ body {
     background-color: #f0f0f0;
     display: flex;
     align-items: center;
+    font-family: MyFont;
 }
 
 #header img {
@@ -27,6 +28,7 @@ body {
     border-radius: 30px;
     width: 50px;
     height: 50px;
+    margin-right: 10px;
 }
 
 /* Content container */
@@ -48,6 +50,7 @@ body {
     align-items: flex-start;
     justify-content: flex-start;
     padding: 10px;
+    font-family: MyFont;
 }
 
 .content-container #sidebar .task-list-item {
@@ -169,30 +172,67 @@ body {
     margin-top: 5px;
 } */
 
+.tasks-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    height: calc(100vh - var(--header-height));
+    overflow-y: auto;
+}
+
 .todo-card {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 90%;
     margin-bottom: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid red;
+     /* border-left: 10px solid #503c83; */
+    border-radius: 15px;
+    font-family: MyFont;
+    min-height: 200px;
 }
 
 .priority-line {
-    width: 5px;
+    width: 10px;
     height: 100%;
-    margin-right: 10px;
+    margin-right: auto;
+    border-radius: 15px;
 }
 
 .title-description-container {
     flex-grow: 1;
     margin-right: 20px;
+    width: 200px;
+    margin-left: 10px;
+}
+
+.title-description-container p {
+    
+    /* Set a fixed height
+    height: 3em;
+    /* Hide overflow text */
+    /* overflow: hidden; */
+    /* Add ellipsis to indicate more text */
+    /* text-overflow: ellipsis; */
+    /* Prevent text from wrapping to the next line */
+    /* white-space: nowrap; */
+
+    /* Set a fixed height */
+    height: 8em; /* Adjust based on the desired number of lines */
+    /* Make the content scrollable */
+    overflow-y: auto;
+    /* Ensure the text wraps within the container */
+    white-space: normal;
+    font-size: small;
+    scrollbar-width: thin; 
+    scrollbar-color: transparent transparent;
 }
 
 .date-container {
     flex-grow: 1;
     margin-right: 20px;
+    font-size: small;
 }
 
 .buttons-container {
@@ -200,7 +240,23 @@ body {
     flex-direction: column;
 }
 
+.title-description-container p::-webkit-scrollbar {
+    width: 8px;
+}
 
+.title-description-container p::-webkit-scrollbar-track {
+    background: transparent;
+}
 
+.title-description-container p::-webkit-scrollbar-thumb {
+    background: transparent;
+}
 
+.title-description-container p:hover {
+    scrollbar-color: rgba(0, 0, 0, 0.5) transparent; /* For Firefox */
+}
+
+.title-description-container p:hover::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5); /* For Chrome, Safari, and Opera */
+}
 
