@@ -191,6 +191,16 @@ body {
     border-radius: 15px;
     font-family: MyFont;
     min-height: 200px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    background-color: #f0f0f0;
+    margin: 10px 0;
+    overflow: hidden;
+    margin-left: 20px;
+}
+
+.todo-card:hover {
+    transform: scale(1.02);
+    background-color: #e0e0e0; 
 }
 
 .priority-line {
