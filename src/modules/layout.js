@@ -1,6 +1,6 @@
 import logoImage from "../images/logoimage.jpg";
 import taskImage from "../images/list-box-outline.svg";
-import addTaskImage from "../images/plus-circle-outline.svg";
+import addTaskImage from "../images/plus.svg";
 import ProjectManager from "../modules/projectmanager.js";
 import { saveProjects, loadProjects } from "../modules/persistence.js"
 import Project from "./project.js";
@@ -93,6 +93,7 @@ function generateSidebar() {
             projectManager.setSelectedProject(projectName);
             // Highlight the project
             highlightProject(projectName);
+            displayTodos();
         }
     });
     // Update the project list
@@ -172,10 +173,11 @@ function highlightProject(projectName) {
         const itemName = item.querySelector("span");
         console.log("CURRENT ITEM:", item.textContent);
         if (itemName && itemName.textContent === projectName) {
-            item.style.color = "blue";
+            item.style.cssText = "font-weight: bolder; color: purple;";
             console.log("FOUND A MATCH");
         } else {
-            item.style.color = "black";
+            item.style.color = "white";
+            item.style.cssText = "font-weight: normal; color: white;";
         }
     });
 }
