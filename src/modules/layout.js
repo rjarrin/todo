@@ -182,30 +182,6 @@ function highlightProject(projectName) {
     });
 }
 
-function generateTaskContainer1() {
-    // Identify the task container
-    const taskContainer = document.querySelector("#task-container");
-    // Create a container for just the tasks
-    // Create a container for the footer of the tasks (add-button)
-    const buttonContainer = document.createElement("div");
-    buttonContainer.classList.add("button-container");
-    // Add temp text to container
-    // const taskText = document.createElement("p");
-    // taskText.textContent = "Task here";
-    // taskContainer.appendChild(taskText);
-    // Add add button to the container
-    const addButton = document.createElement("img");
-    addButton.id = "add-task";
-    addButton.src = addTaskImage;
-    addButton.addEventListener("click", () => {
-        console.log("Add button pushed");
-        showModal();
-    });
-    // taskContainer.appendChild(addButton);
-    buttonContainer.appendChild(addButton);
-    taskContainer.appendChild(buttonContainer);
-}
-
 function generateTaskContainer() {
     // Identify the task container
     const taskContainer = document.querySelector("#task-container");
@@ -235,8 +211,6 @@ function generateTaskContainer() {
     taskContainer.appendChild(buttonContainer);
 }
 
-
-
 export function displayTodos() {
     const taskContainer = document.querySelector(".tasks-container");
     // Clear the task container
@@ -261,11 +235,8 @@ function createTodoCard(todo) {
     card.classList.add("todo-card");
 
     // Priority line
-    // const priorityLine = document.createElement("div");
-    // priorityLine.classList.add("priority-line");
     card.style.borderLeftColor = getPriorityColor(todo.priority);
     card.style.borderLeftWidth = "8px";
-    // card.appendChild(priorityLine);
 
     // Title and description container
     const titleDescriptionContainer = document.createElement("div");
@@ -305,12 +276,16 @@ function createTodoCard(todo) {
 
     const editButton = document.createElement("button");
     editButton.textContent = "Edit";
+    editButton.classList.add("edit-button");
     editButton.addEventListener("click", () => console.log("Edit button pressed"));
     buttonsContainer.appendChild(editButton);
 
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("click", () => console.log("Delete button pressed"));
+    deleteButton.classList.add("delete-button");
+    deleteButton.addEventListener("click", () => {
+        
+    });
     buttonsContainer.appendChild(deleteButton);
     card.appendChild(buttonsContainer);
 
