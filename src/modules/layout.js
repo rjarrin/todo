@@ -284,7 +284,11 @@ function createTodoCard(todo) {
     deleteButton.textContent = "Delete";
     deleteButton.classList.add("delete-button");
     deleteButton.addEventListener("click", () => {
-        
+        const selectedProjectName = projectManager.getSelectedProject();
+        const selectedProject = projectManager.getProjectByName(selectedProjectName);
+        selectedProject.removeTodo(todo);
+        saveProjects();
+        displayTodos();
     });
     buttonsContainer.appendChild(deleteButton);
     card.appendChild(buttonsContainer);
