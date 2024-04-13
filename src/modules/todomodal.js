@@ -2,7 +2,6 @@ import { displayTodos, projectManager } from "./layout.js";
 import { saveProjects } from "./persistence.js";
 import Todo from "./todo.js";
 
-
 function createModal() {
     // Define modal div
     const modal = document.createElement("div");
@@ -133,6 +132,24 @@ function createModal() {
 function showModal() {
     const modal = document.getElementById("todo-modal");
     modal.style.display = "block";
+    // Reset the form
+    const form = document.getElementById("todo-form");
+    form.reset();
+    // Update the submit button for adding a new todo
+    const submitButton = document.querySelector("#todo-form button[type='submit']");
+    submitButton.textContent = "Add";
+    submitButton.onclick = function (e) {
+        e.preventDefault();
+        const title = document.getElementById("todo-title-input").value;
+        const description = document.getElementById("todo-description-input").value;
+        const dueDate = document.getElementById("todo-date-input").value;
+        const priority = document.getElementById("todo-priority-input").value;
+        if (title) {
+            addTodoToProject(title, description, dueDate, priority);
+            modal.style.display = "none";
+            form.reset();
+        }
+    }
 }
 
 function addTodoToProject(title, description, dueDate, priority) {
@@ -156,4 +173,46 @@ function addTodoToProject(title, description, dueDate, priority) {
     displayTodos();
 }
 
-export {createModal, showModal};
+function showEditModal(todo) {
+    const modal = document.getElementById("todo-modal");
+    modal.style.display = "block";
+
+    // Prefill the modal
+    document.getElementById("todo-title-input").value = todo.title;
+    document.getElementById("todo-description-input").value = todo.description;
+    document.getElementById("todo-date-input").value = todo.dueDate ? todo.dueDate.toISOString().split('T')[0] : "";
+    document.getElementById("todo-priority-input").value = todo.priority;
+
+    // Change the form's submit event to update information
+    const form = document.getElementById("todo-form");
+    const submitButton = document.querySelector("#todo-form button[type='submit']");
+    submitButton.textContent = "Update";
+    submitButton.onclick = function(e) {
+        e.preventDefault();
+        updateTodo(todo);
+    };
+
+    const cancelButton = document.createElement("button");
+    cancelButton.textContent = "Cancel";
+    cancelButton.addEventListener("click", () => {
+        modal.style.display = "none";
+        form.reset();
+    });
+}
+
+function updateTodo(todo) {
+    const title = document.getElementById("todo-title-input").value;
+    const description = document.getElementById("todo-description-input").value;
+    const dueDate = document.getElementById("todo-date-input").value;
+    const priority = document.getElementById("todo-priority-input").value;
+
+    todo.editTodo(title, description, dueDate, priority);
+    saveProjects();
+    displayTodos();
+
+    // Close the modal
+    const modal = document.getElementById("todo-modal");
+    modal.style.display = "none";
+}
+
+export {createModal, showModal, showEditModal};

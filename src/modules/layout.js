@@ -4,7 +4,7 @@ import addTaskImage from "../images/plus.svg";
 import ProjectManager from "../modules/projectmanager.js";
 import { saveProjects, loadProjects } from "../modules/persistence.js"
 import Project from "./project.js";
-import { createModal, showModal } from "./todomodal.js";
+import { createModal, showModal, showEditModal } from "./todomodal.js";
 import { format } from "date-fns";
 
 export const projectManager = new ProjectManager();
@@ -277,7 +277,9 @@ function createTodoCard(todo) {
     const editButton = document.createElement("button");
     editButton.textContent = "Edit";
     editButton.classList.add("edit-button");
-    editButton.addEventListener("click", () => console.log("Edit button pressed"));
+    editButton.addEventListener("click", () => {
+        showEditModal(todo);
+    });
     buttonsContainer.appendChild(editButton);
 
     const deleteButton = document.createElement("button");
