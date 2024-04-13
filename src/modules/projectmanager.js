@@ -8,8 +8,6 @@ class ProjectManager {
 
     // Add a new project
     addProject(name) {
-        // const newProject = new Project(name);
-        // this.projects.push(newProject);
         let project;
         if (typeof name === "string") {
             // Check if a project with the same name already exists

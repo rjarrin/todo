@@ -33,7 +33,6 @@ export function loadProjects() {
             const todo = new Todo(
                 todoData.title,
                 todoData.description,
-                //new Date(todoData.dueDate),
                 dueDate,
                 new Date(todoData.creationDate),
                 todoData.priority,
@@ -42,7 +41,6 @@ export function loadProjects() {
             );
             project.addTodo(todo);
         });
-        console.log("CALLED ADDPROJECT FROM PERSISTENCE");
         projectManager.addProject(project);
     });
 }

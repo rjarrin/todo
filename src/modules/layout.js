@@ -1,3 +1,4 @@
+// Import dependencies and modules
 import logoImage from "../images/logoimage.jpg";
 import taskImage from "../images/list-box-outline.svg";
 import addTaskImage from "../images/plus.svg";
@@ -7,8 +8,10 @@ import Project from "./project.js";
 import { createModal, showModal, showEditModal } from "./todomodal.js";
 import { format } from "date-fns";
 
+// Initialize project manager
 export const projectManager = new ProjectManager();
 
+// Generate the initial template for the application
 export default function generateTemplate() {
     loadProjects();
     createModal();
@@ -20,16 +23,15 @@ export default function generateTemplate() {
     generateHeader();
     generateSidebar();
     generateTaskContainer();
-    //generateButtonContainer();
     if (projects.length > 0) {
         const firstProject = projects[0].name;
         projectManager.setSelectedProject(firstProject);
         highlightProject(firstProject);
         displayTodos();
-    }
-    
+    }  
 }
 
+// Generate the header section of the application
 function generateHeader() {
     // Identify the header
     const header = document.getElementById("header");
@@ -44,6 +46,7 @@ function generateHeader() {
     header.appendChild(headerTitle);
 }
 
+// Generate the sidebar section
 function generateSidebar() {
     // Identify the sidebar div
     const sidebar = document.querySelector("#sidebar");
@@ -80,11 +83,8 @@ function generateSidebar() {
     // Add event listener to the create project button
     createProjectButton.addEventListener("click", () => {
         const projectName = prompt("Enter a name for a new project:");
-        console.log("Project name entered:", projectName);
         if(projectName) {
-            console.log("Creating new project with name:", projectName);
             const newProject = new Project(projectName);
-            console.log("CALLED ADDPROJECT FROM BUTTON LISTENER");
             projectManager.addProject(newProject);
             updateProjectList();
             saveProjects();
@@ -100,18 +100,7 @@ function generateSidebar() {
     updateProjectList();
 }
 
-function updateProjectDropdown() {
-    const select = document.getElementById("projectSelect");
-    // Clear the dropdown
-    select.innerHTML = "";
-    projectManager.getAllProjects().forEach(project => {
-        const option = document.createElement("option");
-        option.value = project.name;
-        option.textContent = project.name;
-        select.appendChild(option);
-    });
-}
-
+// Update the projects
 function updateProjectList() {
     const projectList = document.getElementById("projectList");
     // Clear the list
@@ -127,7 +116,6 @@ function updateProjectList() {
         listItem.addEventListener("click", () => {
             // Update the currently selected project
             updateSelectedProject(project.name);
-            console.log("CLICKED THE ITEM");
         });
         // Create and append the edit button
         const editButton = document.createElement("button");
@@ -156,6 +144,7 @@ function updateProjectList() {
     });
 }
 
+// Determine the currently selected project via highlights
 function updateSelectedProject(projectName) {
     // Update the currently selected project
     projectManager.setSelectedProject(projectName);
@@ -165,16 +154,14 @@ function updateSelectedProject(projectName) {
     displayTodos();
 }
 
+// Highlight the project text
 function highlightProject(projectName) {
     const projectListItems = document.querySelectorAll("#projectList li");
-    console.log("WITHIN HIHGLIGHT:", projectName);
 
     projectListItems.forEach(item => {
         const itemName = item.querySelector("span");
-        console.log("CURRENT ITEM:", item.textContent);
         if (itemName && itemName.textContent === projectName) {
             item.style.cssText = "font-weight: bolder; color: purple;";
-            console.log("FOUND A MATCH");
         } else {
             item.style.color = "white";
             item.style.cssText = "font-weight: normal; color: white;";
@@ -182,20 +169,18 @@ function highlightProject(projectName) {
     });
 }
 
+// Generate the task section
 function generateTaskContainer() {
     // Identify the task container
     const taskContainer = document.querySelector("#task-container");
     // Clear the task container
     taskContainer.innerHTML = "";
-
     // Create a container for just the tasks
     const tasksContainer = document.createElement("div");
     tasksContainer.classList.add("tasks-container");
-
     // Create a container for the footer of the tasks (add-button)
     const buttonContainer = document.createElement("div");
     buttonContainer.classList.add("button-container");
-
     // Add add button to the container
     const addButton = document.createElement("img");
     addButton.id = "add-task";
@@ -205,12 +190,12 @@ function generateTaskContainer() {
         showModal();
     });
     buttonContainer.appendChild(addButton);
-
     // Append tasksContainer and buttonContainer to the taskContainer
     taskContainer.appendChild(tasksContainer);
     taskContainer.appendChild(buttonContainer);
 }
 
+// Display the todos of a selected project
 export function displayTodos() {
     const taskContainer = document.querySelector(".tasks-container");
     // Clear the task container
@@ -230,10 +215,10 @@ export function displayTodos() {
     });
 }
 
+// Create the todo card element for the display
 function createTodoCard(todo) {
     const card = document.createElement("div");
     card.classList.add("todo-card");
-
     // Priority line
     card.style.borderLeftColor = getPriorityColor(todo.priority);
     card.style.borderLeftWidth = "8px";
@@ -298,6 +283,7 @@ function createTodoCard(todo) {
     return card;
 }
 
+// Set priority color border based on selected priority item
 function getPriorityColor(priority) {
     switch (priority) {
         case "Low":
